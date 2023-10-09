@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Countdown</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            text-align: center;
+            background-color: #b0e0e6; /* Light Blue background color */
+            animation: backgroundAnimation 10s linear infinite alternate; /* Background animation */
+        }
+
+        @keyframes backgroundAnimation {
+            0% {
+                background-color: #b0e0e6;
+            }
+            100% {
+                background-color: #ffe4b5; /* Change to a different background color */
+            }
+        }
+
+        #birthdayMessage {
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 100px;
+            animation: bounce 2s infinite;
+        }
+
+        #countdown {
+            font-size: 48px;
+            margin-top: 20px;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .firework {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #f06c64; /* Firework color */
+            border-radius: 50%;
+            animation: fireworks 10s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes fireworks {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-800px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="birthdayMessage"></div>
+        <div id="countdown"></div>
+    </div>
+
+    <script>
+        function updateMessage() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+
+            if (hours > 0) {
+                document.getElementById('birthdayMessage').innerText = 'Advance Happy Birthday Siresha!';
+            } else {
+                document.getElementById('birthdayMessage').innerText = 'Happy Birthday Siresha!';
+            }
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0); // Set it to 12:00 AM tomorrow
+
+            const timeLeft = tomorrow - now;
+            const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerHTML = `${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
+        }
+
+        function createFireworks() {
+            const fireworksContainer = document.createElement('div');
+            fireworksContainer.className = 'firework-container';
+            document.body.appendChild(fireworksContainer);
+
+            setInterval(() => {
+                for (let i = 0; i < 20; i++) { // Increase the number of fireworks
+                    const fireworks = document.createElement('div');
+                    fireworks.className = 'firework';
+                    fireworks.style.left = `${Math.random() * 100}%`;
+                    fireworks.style.animationDuration = `${Math.random() * 4 + 1}s`; // Adjust animation duration
+                    fireworksContainer.appendChild(fireworks);
+
+                    setTimeout(() => {
+                        fireworks.remove();
+                    }, 4000); // Increase the duration of fireworks display
+                }
+            }, 2000); // Generate fireworks every 2 seconds
+        }
+
+        // Trigger fireworks animation when the page loads
+        window.onload = () => {
+            createFireworks();
+            updateMessage();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        };
+    </script>
+</body>
+</html>
